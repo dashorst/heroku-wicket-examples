@@ -2,3 +2,8 @@ target
 .project
 .classpath
 .settings
+.svn
+.tomcatplugin
+.amateras
+*.log
+
