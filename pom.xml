@@ -25,7 +25,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>wicket-examples</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Wicket Examples</name>
 	<description>Examples displaying a component reference and
 		several components in action.</description>
@@ -98,6 +98,16 @@
 		<dependency>
 			<groupId>org.eclipse.jetty.aggregate</groupId>
 			<artifactId>jetty-all-server</artifactId>
+			<version>${jetty.version}</version>
+			<!--  needs to be compile time as we bring our own embedded Jetty -->
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<!--  needs to be compile time as we bring our own embedded Jetty -->
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -170,6 +180,30 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<configuration>
+							<assembleDirectory>target</assembleDirectory>
+							<generateRepository>false</generateRepository>
+							<extraJvmArguments>-Xmx512m</extraJvmArguments>
+							<programs>
+								<program>
+									<mainClass>Start</mainClass>
+									<name>webapp</name>
+								</program>
+							</programs>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
